@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Static Site Server",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "serve.cmd"],
+      "port": 3000
+    },
+    {
+      "name": "Site Generator",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "\"C:\\Program Files\\nodejs\\node.exe\" generate.cjs"],
+      "port": 3001
+    }
+  ]
+}
