@@ -7,30 +7,47 @@
   'use strict';
 
   /* ----------------------------------------------------------
-     Contact form — simulate submission (no backend)
+     Contact form — send via Resend API (send-mail.php)
      ---------------------------------------------------------- */
   var contactForm = document.getElementById('contactForm');
   if (contactForm) {
     contactForm.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (!contactForm.checkValidity()) { contactForm.classList.add('was-validated'); return; }
+
       var btn = contactForm.querySelector('[type=submit]');
-      var original = btn.textContent;
       btn.disabled = true;
       btn.textContent = 'Sending…';
 
-      // Simulate async send
-      setTimeout(function () {
-        btn.disabled = false;
-        btn.textContent = original;
-        contactForm.reset();
+      var data = new FormData();
+      data.append('name',    document.getElementById('fname').value);
+      data.append('company', document.getElementById('fcompany').value);
+      data.append('email',   document.getElementById('femail').value);
+      data.append('phone',   document.getElementById('fphone').value);
+      data.append('message', document.getElementById('fmessage').value);
 
-        // Show Bootstrap toast / alert
-        var alertEl = document.getElementById('formSuccessAlert');
-        if (alertEl) {
-          alertEl.classList.remove('d-none');
-          setTimeout(function () { alertEl.classList.add('d-none'); }, 5000);
-        }
-      }, 1200);
+      fetch('send-mail.php', { method: 'POST', body: data })
+        .then(function (r) { return r.json(); })
+        .then(function (json) {
+          btn.disabled = false;
+          btn.textContent = 'Send Message';
+          if (json.success) {
+            contactForm.reset();
+            contactForm.classList.remove('was-validated');
+            var alertEl = document.getElementById('formSuccessAlert');
+            if (alertEl) {
+              alertEl.classList.remove('d-none');
+              setTimeout(function () { alertEl.classList.add('d-none'); }, 5000);
+            }
+          } else {
+            alert('Sorry, there was a problem sending your message. Please try again or email us directly.');
+          }
+        })
+        .catch(function () {
+          btn.disabled = false;
+          btn.textContent = 'Send Message';
+          alert('Sorry, there was a problem sending your message. Please try again or email us directly.');
+        });
     });
   }
 
