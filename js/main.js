@@ -7,7 +7,7 @@
   'use strict';
 
   /* ----------------------------------------------------------
-     Contact form — send via Resend API (send-mail.php)
+     Contact form — send via Resend API (direct fetch)
      ---------------------------------------------------------- */
   var contactForm = document.getElementById('contactForm');
   if (contactForm) {
@@ -19,19 +19,37 @@
       btn.disabled = true;
       btn.textContent = 'Sending…';
 
-      var data = new FormData();
-      data.append('name',    document.getElementById('fname').value);
-      data.append('company', document.getElementById('fcompany').value);
-      data.append('email',   document.getElementById('femail').value);
-      data.append('phone',   document.getElementById('fphone').value);
-      data.append('message', document.getElementById('fmessage').value);
+      var name    = document.getElementById('fname').value;
+      var company = document.getElementById('fcompany').value;
+      var email   = document.getElementById('femail').value;
+      var phone   = document.getElementById('fphone').value;
+      var message = document.getElementById('fmessage').value;
 
-      fetch('send-mail.php', { method: 'POST', body: data })
+      var body = 'Name: ' + name + '\n';
+      if (company) body += 'Company: ' + company + '\n';
+      body += 'Email: ' + email + '\n';
+      if (phone)   body += 'Phone: ' + phone + '\n';
+      body += '\nMessage:\n' + message;
+
+      fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer re_THow3y9a_5sPdma41UND4wffZkZnx9dXX',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from:     'contact@plusopto.co.uk',
+          to:       ['sales@plusopto.co.uk'],
+          subject:  'Website enquiry from ' + name,
+          text:     body,
+          reply_to: email
+        })
+      })
         .then(function (r) { return r.json(); })
         .then(function (json) {
           btn.disabled = false;
           btn.textContent = 'Send Message';
-          if (json.success) {
+          if (json.id) {
             contactForm.reset();
             contactForm.classList.remove('was-validated');
             var alertEl = document.getElementById('formSuccessAlert');
