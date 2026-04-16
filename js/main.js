@@ -25,25 +25,10 @@
       var phone   = document.getElementById('fphone').value;
       var message = document.getElementById('fmessage').value;
 
-      var body = 'Name: ' + name + '\n';
-      if (company) body += 'Company: ' + company + '\n';
-      body += 'Email: ' + email + '\n';
-      if (phone)   body += 'Phone: ' + phone + '\n';
-      body += '\nMessage:\n' + message;
-
-      fetch('https://api.resend.com/emails', {
+      fetch('WORKER_URL_PLACEHOLDER', {
         method: 'POST',
-        headers: {
-          'Authorization': 'Bearer re_THow3y9a_5sPdma41UND4wffZkZnx9dXX',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          from:     'contact@plusopto.com',
-          to:       ['sales@plusopto.co.uk'],
-          subject:  'Website enquiry from ' + name,
-          text:     body,
-          reply_to: email
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, company: company, email: email, phone: phone, message: message })
       })
         .then(function (r) { return r.json(); })
         .then(function (json) {
