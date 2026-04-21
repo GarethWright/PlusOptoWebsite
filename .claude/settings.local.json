@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.plusopto.co.uk)",
+      "Bash(ls assets/img/C3* assets/img/FUT100* assets/img/miboxer-s* assets/img/FUT088* assets/img/FUT089* assets/img/FUT092* assets/img/FUT006*)",
+      "Bash(ls pdfs/FUT100* pdfs/S1-B* pdfs/WL5* pdfs/FUT089* pdfs/FUT006*)",
+      "Bash(xargs sed:*)"
+    ]
+  }
+}
