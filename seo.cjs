@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SITE_URL = 'https://www.plusopto.co.uk';
+const SITE_URL = 'https://www.plusopto.com';
 const BASE_DIR = __dirname;
 
 // ---------------------------------------------------------------------------
