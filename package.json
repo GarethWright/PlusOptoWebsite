@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npx pagefind --site ."
+    "build": "npx pagefind --site .",
+    "seo": "node seo.cjs"
   }
 }
