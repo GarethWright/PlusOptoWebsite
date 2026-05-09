@@ -1,7 +1,5 @@
 // Plus Opto — Contact Form Proxy Worker
 // Deploy this to Cloudflare Workers.
-// Add environment variable: RESEND_API_KEY = re_THow3y9a_5sPdma41UND4wffZkZnx9dXX
-
 export default {
   async fetch(request, env) {
 
