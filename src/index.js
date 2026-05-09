@@ -46,6 +46,11 @@ async function handleContact(request, env) {
       </td></tr>
     </table>`;
 
+  if (!env.RESEND_API_KEY) {
+    console.error('RESEND_API_KEY secret is not set');
+    return jsonResponse({ error: 'Server misconfiguration' }, 500);
+  }
+
   const resendRes = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -62,6 +67,9 @@ async function handleContact(request, env) {
   });
 
   const data = await resendRes.json();
+  if (!resendRes.ok) {
+    console.error('Resend error', resendRes.status, JSON.stringify(data));
+  }
   return jsonResponse(data, resendRes.status);
 }
 
